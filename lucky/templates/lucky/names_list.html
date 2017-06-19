@@ -1,0 +1,24 @@
+{% extends 'lucky/base.html' %}
+
+{% block del_pick %}
+    <form action="/del_name/" method="post" id="delete_form">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" class="btn" value="Delete this name">
+    </form>
+    <p><a href="/">Go back for add new names</a></p>
+    <form action="/pick_luckers/" method="get" id="luckers">
+        {% csrf_token %}
+        <input type="submit" class="btn" value="Pick luckers!">
+    </form>
+    <h3>Names list</h3>
+    <div id="container">
+        {% for name in names %}
+            <div class="name_block">
+                <h6>{{ name.name }}</h6>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

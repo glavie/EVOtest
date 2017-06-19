@@ -1,0 +1,17 @@
+{% extends 'lucky/base.html' %}
+
+
+{% block add_name %}
+<center><div class="container">
+    <form action="/add_name/" method="post" id="name_form">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" class="btn" value="Add name">
+    </form>
+</div>
+<p><a href="/names_list/">Go to names list</a> </p>
+</center>
+
+{% endblock %}
+
+

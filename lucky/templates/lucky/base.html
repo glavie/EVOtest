@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 2</title>
+    <script src="/static/jquery.min.js"></script>
+</head>
+<center>
+{% block add_name %}{% endblock %}
+{% block del_pick %}{% endblock %}
+</center>
+
+<script type="text/javascript">
+    $(document).on('submit', '#name_form', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "/add_name/",
+            data:$('#name_form').serialize(),
+            dataType: 'json',
+            success: function () {
+                alert('Name successfully added to db');
+                $('#name_form').trigger("reset");
+            },
+            error: function (return_data) {
+                alert(return_data["responseText"])
+            }
+            });
+        });
+
+    $(document).on('submit', '#delete_form', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "/del_name/",
+            data: $('#delete_form').serialize(),
+            dataType: 'json',
+            success: function () {
+                alert('Name successfully deleted');
+                var name = $("#delete_form :input[name='name']").val();
+                $(".name_block:contains('" + name + "')").text('');
+                $('#delete_form').trigger("reset");
+            },
+            error: function (return_data) {
+                alert(return_data["responseText"]);
+            }
+        });
+    });
+
+    $(document).on('submit', '#luckers', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: "/pick_luckers/",
+            dataType: 'json',
+            success: function (return_data) {
+                alert(return_data["responseText"]);
+            },
+            error: function (return_data) {
+                alert(return_data["responseText"]);
+            }
+        });
+    });
+
+</script>
