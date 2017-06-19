@@ -31,9 +31,15 @@ def add_name(request):
     if form.is_valid():
         username = form.cleaned_data['name']
         if Names.objects.filter(name=username).exists():
-            return JsonResponse({'errors': 'name is already in db'}, status=400)
+            return JsonResponse(
+                {'errors': 'name is already in db'},
+                status=400
+            )
         form.save()
-        return JsonResponse({'done': 'name successfully added to db!'}, status=400)
+        return JsonResponse(
+            {'done': 'name successfully added to db!'},
+            status=200
+        )
     else:
         return JsonResponse({'errors': form.errors}, status=400)
 
@@ -61,12 +67,11 @@ def rand_names(request):
     len_names = len(luckers)
     if len_names == 0:
         return HttpResponse('No any names in db')
-    elif len_names <= 3:
-        return HttpResponse(
-            'luckers: ' + ' '.join(map(attrgetter('name'), luckers))
-        )
-    else:
-        return HttpResponse(
-                'luckers: ' + ' '.join(map(attrgetter('name'),
-                                         random.sample(luckers, 3)))
-        )
+    return HttpResponse(
+            'luckers: {}'.format(
+                ', '.join(
+                    Names.objects.all().order_by(
+                        '?'
+                    )[:3].values_list('name', flat=True))
+            )
+    )
